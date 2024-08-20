@@ -1,0 +1,27 @@
+name: AWS EC2 VM Export Failure
+enabled: true
+description: |-
+  An attempt to export an AWS EC2 instance has been detected. A VM Export might indicate an attempt to extract information from an instance.
+
+  References:
+  * https://docs.aws.amazon.com/vm-import/latest/userguide/vmexport.html#export-instance
+severity: Low
+query_text: |-
+  %ingest.source_type="aws:cloudtrail"
+  eventName="CreateInstanceExportTask"
+  eventSource="ec2.amazonaws.com"
+  (not (errorMessage:* or errorCode:*))
+  | stats
+    min(timestamp) as firstTime,
+    max(timestamp) as lastTime,
+    count() as eventCount
+    by
+    userIdentity.arn,
+    eventSource,
+    eventName,
+    awsRegion
+time_range_s: 300
+run_frequency_s: 60
+event_sink_keys:
+- low_severity_alerts
+

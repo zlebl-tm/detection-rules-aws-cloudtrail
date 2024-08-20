@@ -1,0 +1,29 @@
+name: AWS Config Disabling Channel/Recorder
+enabled: true
+description: |-
+  Detects AWS Config Service disabling
+
+  References:
+  * https://docs.aws.amazon.com/config/latest/developerguide/cloudtrail-log-files-for-aws-config.html
+
+  False Positives:
+  * Valid change in AWS Config Service
+severity: High
+query_text: |-
+  %ingest.source_type="aws:cloudtrail"
+  eventSource="config.amazonaws.com"
+  eventName=(DeleteDeliveryChannel StopConfigurationRecorder)
+  | stats
+    min(timestamp) as firstTime,
+    max(timestamp) as lastTime,
+    count() as eventCount
+    by
+    userIdentity.arn,
+    eventSource,
+    eventName,
+    awsRegion
+time_range_s: 300
+run_frequency_s: 60
+event_sink_keys:
+- high_severity_alerts
+

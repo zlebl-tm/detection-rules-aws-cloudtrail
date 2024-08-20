@@ -1,0 +1,29 @@
+name: AWS Root Credentials
+enabled: true
+description: |-
+  Detects AWS root account usage
+
+  References:
+  * https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
+
+  False Positives:
+  * AWS Tasks That Require AWS Account Root User Credentials https://docs.aws.amazon.com/general/latest/gr/aws_tasks-that-require-root.html
+severity: Medium
+query_text: |-
+  %ingest.source_type="aws:cloudtrail"
+  userIdentity.type=Root
+  (not eventType=AwsServiceEvent)
+  | stats
+    min(timestamp) as firstTime,
+    max(timestamp) as lastTime,
+    count() as eventCount
+    by
+    userIdentity.arn,
+    eventSource,
+    eventName,
+    awsRegion
+time_range_s: 300
+run_frequency_s: 60
+event_sink_keys:
+- medium_severity_alerts
+
