@@ -14,10 +14,12 @@ query_text: |-
   %ingest.source_type="aws:cloudtrail"
   eventSource="iam.amazonaws.com"
   eventName="PutUserPolicy"
-  userAgent:'S3 Browser"
-  requestParameters.policyDocument: "<YOUR-BUCKET-NAME>"
-  requestParameters.policyDocument: 's3:GetObject'
-  requestParameters.policyDocument: 'Allow'
+  userAgent: 'S3 Browser'
+  requestParameters.policyDocument: (
+    "<YOUR-BUCKET-NAME>"
+    and 's3:GetObject'
+    and 'Allow'
+  )
   | stats
     min(timestamp) as firstTime,
     max(timestamp) as lastTime,
