@@ -1,3 +1,4 @@
+# schema: https://scanner.dev/schema/scanner-detection-rule.v1.json
 name: AWS Route 53 Domain Transferred to Another Account
 enabled: true
 description: |-

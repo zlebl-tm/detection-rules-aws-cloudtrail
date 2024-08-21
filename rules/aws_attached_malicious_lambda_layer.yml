@@ -1,3 +1,4 @@
+# schema: https://scanner.dev/schema/scanner-detection-rule.v1.json
 name: AWS Attached Malicious Lambda Layer
 enabled: true
 description: |-
