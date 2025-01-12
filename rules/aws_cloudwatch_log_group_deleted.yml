@@ -1,0 +1,33 @@
+# schema: https://scanner.dev/schema/scanner-detection-rule.v1.json
+name: AWS CloudWatch log group deleted
+description: |-
+  ## Goal
+  Detect when a CloudWatch Log Group is deleted.
+
+  ## Strategy
+  Detect a successful event named "DeleteLogGroup".
+
+  ## Triage and response
+  1. Ensure the log group is not used for auditing or security purposes.
+  2. If it is:
+      * Verify that the user making this API call is authorized in your environment.
+      * Consider adding the log group name to a suppression list.
+  3. If it is not for auditing or security, initiate your company's incident response process and investigate.
+enabled: true
+severity: Low
+query_text: |-
+  %ingest.source_type:cloudtrail
+  eventName:DeleteLogGroup
+  (not errorCode:*)
+  (not userAgent:(cloudformation.amazonaws.com *www.terraform.io*))
+  (not userIdentity.invokedBy:cloudformation.amazonaws.com)
+  | groupbycount(userIdentity.arn)
+  | where @q.count > 0
+time_range_s: 300
+run_frequency_s: 60
+event_sink_keys:
+- low_severity_alerts
+tags:
+- techniques.t1562.impair_defenses
+- source.cloudtrail
+- tactics.ta0005.defense_evasion

@@ -1,0 +1,32 @@
+# schema: https://scanner.dev/schema/scanner-detection-rule.v1.json
+name: AWS GuardDuty publishing destination deleted
+description: |-
+  ## Goal
+  Detect when a user deletes a publishing destination for a detector, which will prevent the exporting of findings.
+
+  ## Strategy
+  This rule monitors the API call to detect if a user has deleted a Guard Duty publishing destination.
+
+  * DeletePublishingDestination
+
+  ## Triage and response
+  1. Identify the user who owns the API key that made the API call.
+  2. Contact the user to confirm if they intended to make this API call.
+  3. If the user did not make the API call:
+      * Rotate the credentials.
+      * Investigate if the same credentials made other unauthorized API calls.
+enabled: true
+severity: Medium
+query_text: |-
+  %ingest.source_type:cloudtrail
+  eventName:DeletePublishingDestination
+  | groupbycount(userIdentity.arn)
+  | where @q.count > 0
+time_range_s: 300
+run_frequency_s: 60
+event_sink_keys:
+- medium_severity_alerts
+tags:
+- techniques.t1562.impair_defenses
+- source.cloudtrail
+- tactics.ta0005.defense_evasion

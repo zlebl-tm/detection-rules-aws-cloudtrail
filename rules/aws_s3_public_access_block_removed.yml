@@ -1,0 +1,31 @@
+# schema: https://scanner.dev/schema/scanner-detection-rule.v1.json
+name: AWS S3 Public Access Block removed
+description: |-
+  ## Goal
+  Detect when the S3 Public Access Block configuration is removed.
+
+  ## Strategy
+  Monitor the DeleteAccountPublicAccessBlock API call to identify if the S3 Public Access Block configuration has been deleted.
+
+  ## Triage and response
+  1. Identify the user who made this API call.
+  2. Contact the user and inform them of best practices for enabling Public Access Block on S3 buckets.
+  3. Re-enable Public Access Block on the S3 bucket.
+
+  More details on S3 Public Block Public Access can be found [here](https://docs.aws.amazon.com/AmazonS3/latest/dev/access-control-block-public-access.html).
+enabled: true
+severity: High
+query_text: |-
+  %ingest.source_type:cloudtrail
+  (not errorCode:*)
+  eventName:DeleteAccountPublicAccessBlock
+  | groupbycount(userIdentity.arn)
+  | where @q.count > 0
+time_range_s: 300
+run_frequency_s: 60
+event_sink_keys:
+- high_severity_alerts
+tags:
+- source.cloudtrail
+- techniques.t1562.impair_defenses
+- tactics.ta0005.defense_evasion
