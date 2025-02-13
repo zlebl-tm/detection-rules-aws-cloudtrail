@@ -41,4 +41,10 @@ time_range_s: 300
 run_frequency_s: 60
 event_sink_keys:
 - low_severity_alerts
-
+tags:
+- source.cloudtrail
+- tactics.ta0005.defense_evasion
+- tactics.ta0040.impact
+- techniques.t1562.impair_defenses
+- techniques.t1565.data_manipulation
+- techniques.t1578.modify_cloud_compute_infrastructure

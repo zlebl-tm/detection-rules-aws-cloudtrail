@@ -27,4 +27,7 @@ time_range_s: 300
 run_frequency_s: 60
 event_sink_keys:
 - medium_severity_alerts
-
+tags:
+- tactics.ta0010.exfiltration
+- techniques.t1537.transfer_data_to_cloud_account
+- source.cloudtrail

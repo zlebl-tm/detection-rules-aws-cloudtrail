@@ -33,6 +33,13 @@ time_range_s: 300
 run_frequency_s: 60
 event_sink_keys:
 - high_severity_alerts
+tags:
+- source.cloudtrail
+- tactics.ta0004.privilege_escalation
+- tactics.ta0005.defense_evasion
+- techniques.t1098.account_manipulation
+- techniques.t1078.valid_accounts
+- techniques.t1526.cloud_service_discovery
 tests:
   - name: Test IAM S3Browser templated S3 bucket policy creation present
     now_timestamp: "2024-08-21T00:03:00.000Z"

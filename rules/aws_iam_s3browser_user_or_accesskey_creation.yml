@@ -28,4 +28,11 @@ time_range_s: 300
 run_frequency_s: 60
 event_sink_keys:
 - high_severity_alerts
+tags:
+- source.cloudtrail
+- tactics.ta0003.persistence
+- tactics.ta0004.privilege_escalation
+- tactics.ta0006.credential_access
+- techniques.t1136.create_account
+- techniques.t1098.account_manipulation
 

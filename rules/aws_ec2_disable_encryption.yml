@@ -30,4 +30,7 @@ time_range_s: 300
 run_frequency_s: 60
 event_sink_keys:
 - medium_severity_alerts
-
+tags:
+- tactics.ta0005.defense_evasion
+- techniques.t1562.impair_defenses
+- source.cloudtrail

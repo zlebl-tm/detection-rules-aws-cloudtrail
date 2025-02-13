@@ -28,4 +28,8 @@ time_range_s: 300
 run_frequency_s: 60
 event_sink_keys:
 - high_severity_alerts
-
+tags:
+- tactics.ta0010.exfiltration
+- techniques.t1078.valid_accounts
+- techniques.t1567.exfiltration_over_web_service
+- source.cloudtrail

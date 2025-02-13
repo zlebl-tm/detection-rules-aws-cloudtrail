@@ -29,4 +29,9 @@ time_range_s: 300
 run_frequency_s: 60
 event_sink_keys:
 - low_severity_alerts
-
+tags:
+- source.cloudtrail
+- tactics.ta0004.privilege_escalation
+- tactics.ta0002.execution
+- techniques.t1548.abuse_elevation_control_mechanism
+- techniques.t1078.valid_accounts
