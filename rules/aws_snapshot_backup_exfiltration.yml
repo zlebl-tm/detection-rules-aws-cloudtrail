@@ -14,6 +14,7 @@ query_text: |-
   %ingest.source_type="aws:cloudtrail"
   eventSource="ec2.amazonaws.com"
   eventName="ModifySnapshotAttribute"
+  not userIdentity.arn:("WizAccess-Org-Level-IAM-Role")
   | stats
     min(timestamp) as firstTime,
     max(timestamp) as lastTime,
